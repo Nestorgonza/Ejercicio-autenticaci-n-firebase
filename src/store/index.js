@@ -65,14 +65,14 @@ export default new Vuex.Store({
       router.push({
         name: 'ingreso'
       })
-    },
-    getters: {
-      existeUsuario(state) {
-        if (state.usuario === null || state.usuario === '' || state.usuario === undefined) {
-          return false
-        } else {
-          return true
-        }
+    }    
+  },
+  getters: {
+    existeUsuario(state) {
+      if (state.usuario === null || state.usuario === '' || state.usuario === undefined) {
+        return false
+      } else {
+        return true
       }
     }
   }
