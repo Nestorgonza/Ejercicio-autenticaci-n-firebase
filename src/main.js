@@ -2,15 +2,18 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import firebase from 'firebase'
 
-var firebase = require("firebase/app");
+// var firebase = require("firebase/app");
 
 // Add additional services that you want to use
 require("firebase/auth");
 // require("firebase/database");
-// require("firebase/firestore");
+require("firebase/firestore");
 // require("firebase/messaging");
 // require("firebase/functions");
+
+
 
 var firebaseConfig = {
   apiKey: "AIzaSyBpn3qlTMIs5834e-OWxdjp1OFkwHVSBE8",
@@ -22,7 +25,7 @@ var firebaseConfig = {
   appId: "1:145619705575:web:b531f7b79328c17c8e0c42"
 };
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(config);
 
 Vue.config.productionTip = false
 
