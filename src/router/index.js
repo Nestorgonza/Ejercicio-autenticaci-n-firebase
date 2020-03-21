@@ -1,25 +1,45 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-var firebase = require("firebase/app");
+
+import {
+  auth
+} from '../main'
 
 Vue.use(VueRouter)
 
-const routes = [
-  {
+const routes = [{
     path: '/registro',
     name: 'registro',
-    component: () => import(/* webpackChunkName: "about" */ '../views/Registro.vue')
+    component: () => import( /* webpackChunkName: "about" */ '../views/Registro.vue')
   },
   {
     path: '/',
     name: 'inicio',
-    component: () => import(/* webpackChunkName: "about" */ '../views/Inicio.vue'),
-    meta: { requiresAuth: true }
+    component: () => import( /* webpackChunkName: "about" */ '../views/Inicio.vue'),
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/ingreso',
     name: 'ingreso',
-    component: () => import(/* webpackChunkName: "about" */ '../views/Ingreso.vue')
+    component: () => import( /* webpackChunkName: "about" */ '../views/Ingreso.vue')
+  },
+  {
+    path: '/agregar',
+    name: 'agregar',
+    component: () => import( /* webpackChunkName: "about" */ '../views/Agregar.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/editar/:id',
+    name: 'editar',
+    component: () => import( /* webpackChunkName: "about" */ '../views/Editar.vue'),
+    meta: {
+      requiresAuth: true
+    }
   }
 ]
 
@@ -30,14 +50,17 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const rutaProtegida = to.matched.some(record => record.meta.requiresAuth)
-  const user = firebase.auth().currentUser
+  const rutaProtegida = to.matched.some(record => record.meta.requiresAuth);
+  const user = auth.currentUser;
 
   if (rutaProtegida === true && user === null) {
-    next({name: 'ingreso'})
+    next({
+      name: 'ingreso'
+    })
   } else {
     next()
   }
+
 })
 
-export default router
+export default router;
