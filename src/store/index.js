@@ -161,6 +161,7 @@ export default new Vuex.Store({
     agregarTarea({
       commit
     }, nombre) {
+      commit('cargarFirebase', true)
       const usuario = auth.currentUser
       db.collection(usuario.email).add({
           nombre: nombre
@@ -170,6 +171,7 @@ export default new Vuex.Store({
           router.push({
             name: 'inicio'
           })
+          commit('cargarFirebase', false)
         })
     },
     eliminarTarea({
