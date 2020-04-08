@@ -9,7 +9,7 @@
           <div class="input-group-text">Nombre</div>
         </div>
         <input type="text" class="form-control" 
-          v-model="$v.nombre.$model">
+          v-model.lazy="$v.nombre.$model">
       </div>      
       <button type="submit" 
         class="btn btn-primary mb-2"
@@ -21,7 +21,7 @@
       Campo requerido
     </small>
     <small class="text-danger d-block" v-if="!$v.nombre.minLength">
-      Minimo 5 carácteres
+      Mínimo 5 carácteres
     </small>
     <!-- {{$v.nombre}} -->
     {{$v}}

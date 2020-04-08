@@ -4,13 +4,16 @@
     <router-link :to="{name: 'agregar'}">
       <button class="btn btn-success btn-block">Agregar</button>
     </router-link>
+    <form @submit.prevent="buscador(texto)">
+      <input type="text" placeholder="Buscar..." class="form-control mt-5" v-model="texto" v-on:keyup="buscador(texto)">
+    </form>
     <div v-if="carga" class="text-center mt-5">
       <h3>Cargando contenido...</h3>
       <pacman-loader :loading="carga"></pacman-loader>
-    </div>
+    </div>    
     <ul class="list-group mt-5" v-if="!carga">
       <li class="list-group-item" 
-      v-for="item of tareas" :key="item.id">
+      v-for="item of arrayFiltrado" :key="item.id">
         {{item.id}} - {{item.nombre}}
         <div class="float-right">
           <router-link class="btn btn-warning btn-sm mr-2" 
@@ -25,16 +28,22 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapState, mapActions, mapGetters } from "vuex";
 import PacmanLoader from 'vue-spinner/src/PacmanLoader.vue'
 
 export default {
   name: 'Inicio',
+  data() {
+    return {
+      texto: ''
+    }
+  },
   computed:{
-    ...mapState(['usuario','tareas', 'carga'])
+    ...mapState(['usuario','tareas', 'carga']),
+    ...mapGetters(['arrayFiltrado'])
   },
   methods:{
-    ...mapActions(['getTareas','eliminarTarea'])
+    ...mapActions(['getTareas','eliminarTarea', 'buscador'])
   },
   created(){
     this.getTareas()
