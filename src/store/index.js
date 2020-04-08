@@ -17,7 +17,8 @@ export default new Vuex.Store({
       nombre: '',
       id: ''
     },
-    carga: false
+    carga: false,
+    texto: ''
   },
   mutations: {
     setUsuario(state, payload) {
@@ -42,6 +43,12 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    // Buscador
+    buscador({commit, state}, payload) {
+      console.log(payload)
+      state.texto = payload.toLowerCase()
+    },
+
     crearUsuario({
       commit
     }, payload) {
@@ -63,7 +70,14 @@ export default new Vuex.Store({
                 name: 'inicio'
               })
             })
-
+            .catch(err => {
+              console.log(err);
+              commit('setError', err.code)
+            })
+        })
+        .catch(err => {
+          console.log(err);
+          commit('setError', err.code)
         })
     },
     ingresoUsuario({
@@ -82,7 +96,7 @@ export default new Vuex.Store({
         })
         .catch(err => {
           console.log(err);
-          commit('setError', err.message)
+          commit('setError', err.code)
         })
     },
     detectarUsuario({
@@ -161,6 +175,7 @@ export default new Vuex.Store({
     agregarTarea({
       commit
     }, nombre) {
+      commit('cargarFirebase', true)
       const usuario = auth.currentUser
       db.collection(usuario.email).add({
           nombre: nombre
@@ -170,6 +185,7 @@ export default new Vuex.Store({
           router.push({
             name: 'inicio'
           })
+          commit('cargarFirebase', false)
         })
     },
     eliminarTarea({
@@ -192,6 +208,16 @@ export default new Vuex.Store({
       } else {
         return true
       }
+    },
+    arrayFiltrado(state) {
+      let arregloFiltrado = []
+      for(let tarea of state.tareas) {
+        let nombre = tarea.nombre.toLowerCase()
+        if (nombre.indexOf(state.texto) >= 0) {
+          arregloFiltrado.push(tarea)
+        }
+      }
+      return arregloFiltrado
     }
   }
 })

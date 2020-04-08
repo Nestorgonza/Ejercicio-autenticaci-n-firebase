@@ -7,15 +7,25 @@
         <div class="input-group-prepend">
           <div class="input-group-text">Nombre</div>
         </div>
-        <input type="text" v-model="tarea.nombre" class="form-control">
+        <input type="text" v-model="$v.tarea.nombre.$model"
+          class="form-control">
       </div> 
-      <button type="submit" class="btn btn-primary mb-2">Editar</button>
+      <button
+        type="submit" 
+        class="btn btn-primary mb-2"
+        :disabled="$v.tarea.$invalid">
+        Editar
+        </button>
     </form>
+    <small class="text-danger" v-if="!$v.tarea.nombre.required">Campo requerido</small>
+    <!-- {{$v.tarea.nombre}} -->
   </div>
 </template>
 
 <script>
 import {mapActions, mapState} from 'vuex'
+import { required, minLength } from 'vuelidate/lib/validators'
+
 export default {
   name: 'Editar',
   data(){
@@ -31,6 +41,11 @@ export default {
   },
   computed:{
     ...mapState(['tarea'])
+  },
+  validations: {
+    tarea: {
+      nombre: {required}
+    }
   }
 }
 </script>
